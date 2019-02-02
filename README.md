@@ -13,7 +13,7 @@ this mdoel use folder name as label and it will find text files in it as train d
  by default it will use 10 percent of dataset as test and in the end will show it accuracy
  
  <br>
- to test model when model is trained you can simpl call 
+ to test model when model is trained you can simple call 
  
 <pre>>python model_use.py "folder address"</pre>
 which will find label for each file in the folder address
