@@ -5,6 +5,7 @@ import pandas as pd
 from glob import glob
 from nltk.corpus import stopwords
 
+from YAML.YParams import YParams
 from svm_module.srt_interface import srt
 
 
@@ -67,7 +68,9 @@ class data_transform:
 
     def splitData(self, my_df):
         from sklearn.model_selection import train_test_split
-        self.train_df, self.test_df = train_test_split(my_df, test_size=0.1, random_state=42)
+        hparams = YParams('hy.yaml', 'default')
+        self.train_df, self.test_df = train_test_split(my_df, test_size=hparams.test_set_size,
+                                                       random_state=42)
 
         print('label sample:', self.train_df['label'].iloc[0])
         print('text of movie :', self.train_df['text'].iloc[0])

@@ -5,6 +5,7 @@ from collections import Counter
 from nltk.corpus import stopwords
 import spacy
 
+from YAML.YParams import YParams
 from svm_module.CleanTextTransformer import punctuations
 from svm_module.visualize import visualize
 
@@ -34,28 +35,19 @@ class procces:
         return pd.Series(texts)
 
     def ready_visulize(self):
+        hparams = YParams('hy.yaml', 'default')
+        print(hparams.labels)  # print 1024
+        labels = hparams.labels
+        for label in labels:
+            _text = [text for text in self.train_df[self.train_df['label']
+                                                    == label]['text']]
+            _clean = self.cleanup_text(_text)
+            _clean = ' '.join(_clean).split()
 
-        Action_text = [text for text in self.train_df[self.train_df['label']
-                                                      == 'Action']['text']]
-        Comedy_text = [text for text in self.train_df[self.train_df['label']
-                                                      == 'Comedy']['text']]
-        Action_clean = self.cleanup_text(Action_text)
-        Action_clean = ' '.join(Action_clean).split()
-        Comedy_clean = self.cleanup_text(Comedy_text)
-        Comedy_clean = ' '.join(Comedy_clean).split()
-
-        Action_counts = Counter(Action_clean)
-        Comedy_counts = Counter(Comedy_clean)
-        vis = visualize(train_df=self.train_df,
-                        test_df=self.test_df)
-        vis.visualize_chart()
-
-        IS_common_words = [word[0] for word in Comedy_counts.most_common(20)]
-        IS_common_counts = [word[1] for word in Comedy_counts.most_common(20)]
-
-        vis.plot_words(IS_common_words, IS_common_counts,'Comedy')
-
-        IS_common_words = [word[0] for word in Action_counts.most_common(20)]
-        IS_common_counts = [word[1] for word in Action_counts.most_common(20)]
-
-        vis.plot_words(IS_common_words, IS_common_counts,'Action')
+            _counts = Counter(_clean)
+            vis = visualize(train_df=self.train_df,
+                            test_df=self.test_df)
+            vis.visualize_chart()
+            IS_common_words = [word[0] for word in _counts.most_common(20)]
+            IS_common_counts = [word[1] for word in _counts.most_common(20)]
+            vis.plot_words(IS_common_words, IS_common_counts, label)

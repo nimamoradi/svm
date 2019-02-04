@@ -12,11 +12,6 @@ if __name__ == '__main__':
 
     train_df = data_transformed.train_df
     test_df = data_transformed.test_df
-    with open('train_df.pkl', 'wb') as f:
-        pickle.dump(train_df, f, pickle.HIGHEST_PROTOCOL)
-
-    with open('test_df.pkl', 'wb') as f:
-        pickle.dump(test_df, f, pickle.HIGHEST_PROTOCOL)
     del data_transformed
 
     print(train_df.head())
@@ -25,7 +20,7 @@ if __name__ == '__main__':
     proc = procces(train_df=train_df, test_df=test_df)
 
     proc.ready_visulize()
-
+    print('stared training ')
     tra = train(train_df=train_df, test_df=test_df)
 
     tra.train_model()
