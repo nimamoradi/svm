@@ -1,10 +1,12 @@
 import ntpath
+import os
 
 import pandas as pd
 
 from glob import glob
 from nltk.corpus import stopwords
 import re, sys
+
 
 def is_time_stamp(l):
     if l[:2].isnumeric() and l[2] == ":":
@@ -114,7 +116,7 @@ class data_transform:
 
         for item in list_files:
             with open(item, 'r', encoding="utf-8") as file:
-                my_df.loc[len(my_df)] = [label, file.read()]
+                my_df.loc[len(my_df)] = [os.path.basename(item), label, file.read()]
 
     def path_leaf(self, path):
         head, tail = ntpath.split(path)
@@ -123,7 +125,7 @@ class data_transform:
     def fill_pandas(self, path):
         folders = self.list_folders(path)
 
-        my_df = pd.DataFrame(columns=["label", "text"])
+        my_df = pd.DataFrame(columns=["movie_name", "label", "text"])
 
         for index in range(len(folders)):
             print("enter " + self.path_leaf(folders[index]))

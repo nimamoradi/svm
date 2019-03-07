@@ -1,7 +1,7 @@
 import pickle
 import sys
 
-from svm_module.data_transfrom import data_transform
+from svm_module.data_transfrom import data_transform, srt
 from svm_module.procces import procces
 from svm_module.train import train
 
